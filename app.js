@@ -24,6 +24,10 @@ app.get("/", (req, res)=>{
     res.send("I am root");
 })
 
+app.get("/listings/new", (req, res)=>{
+    res.render("listings/new.ejs")
+})
+
 // Show route
 app.get("/listings/:id", async (req, res)=>{
     let {id} = req.params;
@@ -35,6 +39,13 @@ app.get("/listings/:id", async (req, res)=>{
 app.get("/listings", async (req, res)=>{
     const allListings = await Listing.find({})
     res.render("listings/index.ejs", {allListings})
+})
+
+// create route
+app.post("/listings", async (req, res)=>{
+    const newListing = new Listing(req.body.listing);
+    await newListing.save();
+    res.redirect("/listings");
 })
 
 // app.get("/testListing", async (req, res)=>{
